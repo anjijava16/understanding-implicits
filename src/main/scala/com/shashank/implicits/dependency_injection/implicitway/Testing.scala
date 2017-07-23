@@ -5,13 +5,12 @@ import org.scalatest.{Matchers, WordSpec}
 /**
   * Created by shashank on 23/07/2017.
   */
-trait TestEnvironment extends WordSpec with UserRepositoryComponent with UserServiceComponent with Matchers {
+trait TestEnvironment extends WordSpec with Matchers {
 
-  val userService: UserService = new UserServiceImpl
-  implicit val userRepository: UserRepository = new InMemoryUserRepositoryComponent
+  implicit val userRepository: UserRepository = new InMemoryUserRepository
+  val userService: UserService = new UserService
 
 }
-
 
 class Testing extends TestEnvironment{
 

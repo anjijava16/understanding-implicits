@@ -3,10 +3,11 @@ package com.shashank.implicits.dependency_injection.implicitway
 /**
   * Created by shashank on 20/07/2017.
   */
-object ComponentRegistry extends UserServiceComponent with UserRepositoryComponent{
+object ComponentRegistry {
 
-  val userService: UserService = new UserServiceImpl
-  implicit val userRepository: UserRepository = new InMemoryUserRepositoryComponent
+  implicit val userRepository: UserRepository = new InMemoryUserRepository
+  val userService = new UserService
+
 
   def main(args: Array[String]) {
     userService.create("testuser", "abc123", "testuser@gmail.com")

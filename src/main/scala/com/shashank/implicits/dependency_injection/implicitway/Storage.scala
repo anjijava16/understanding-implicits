@@ -13,20 +13,15 @@ trait UserRepository {
   def create(user: User): Option[User]
 }
 
+class InMemoryUserRepository extends UserRepository{
+  private val users = scala.collection.concurrent.TrieMap[String, User]()
 
-trait UserRepositoryComponent {
-  val userRepository:UserRepository
+  def get(username: String): Option[User] =
+    users.get(username)
 
-  class InMemoryUserRepositoryComponent extends UserRepository{
-    private val users = scala.collection.concurrent.TrieMap[String, User]()
+  def delete(username: String): Boolean =
+    users.remove(username).isDefined
 
-    def get(username: String): Option[User] =
-      users.get(username)
-
-    def delete(username: String): Boolean =
-      users.remove(username).isDefined
-
-    def create(user: User): Option[User] =
-      users.put(user.username, user)
-  }
+  def create(user: User): Option[User] =
+    users.put(user.username, user)
 }
