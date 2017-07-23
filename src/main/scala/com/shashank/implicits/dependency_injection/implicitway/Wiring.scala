@@ -1,28 +1,33 @@
 package com.shashank.implicits.dependency_injection.implicitway
 
-import com.shashank.implicits.dependency_injection.cakepattern.{User, _}
-
 /**
   * Created by shashank on 20/07/2017.
   */
-object InMemoryStorageService extends UserAuthorizationImpl with UserRepositoryComponentInMemoryImpl{
+object InMemoryStorageService{
 
   def main(args: Array[String]) {
-    implicit val userRepo = userRepository
-    userRepository.put(User("testuser", "testuser@gmail.com", isAdmin = true))
-    val authStatus = authorize("testuser")
+    implicit val userRepository = new InMemoryUserRepository
+    if(userRepository.get("testuser").isEmpty) {
+      userRepository.put(User("testuser", "testuser@gmail.com", isAdmin = true))
+    } else {
+      println("user with userId testuser already exists")
+    }
+    val authStatus = UserAuthorization.authorize("testuser")
     println(authStatus)
   }
 
 }
 
-object MongoStorageService extends UserAuthorizationImpl with UserRepositoryComponentMongodbImpl {
+object MongoStorageService {
 
   def main(args: Array[String]) {
-    implicit val userRepo = userRepository
-    if(userRepository.get("testuser").isEmpty)
+    implicit val userRepository = new MongoDbUserRepository
+    if(userRepository.get("testuser").isEmpty) {
       userRepository.put(User("testuser", "testuser@gmail.com", isAdmin = true))
-    val authStatus = authorize("testuser")
+    } else {
+      println("user with userId testuser already exists")
+    }
+    val authStatus = UserAuthorization.authorize("testuser")
     println(authStatus)
   }
 
