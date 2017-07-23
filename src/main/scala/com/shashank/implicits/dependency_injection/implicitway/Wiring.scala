@@ -3,32 +3,15 @@ package com.shashank.implicits.dependency_injection.implicitway
 /**
   * Created by shashank on 20/07/2017.
   */
-object InMemoryStorageService{
+object ComponentRegistry extends UserServiceComponent with UserRepositoryComponent{
+
+  val userService: UserService = new UserServiceImpl
+  implicit val userRepository: UserRepository = new InMemoryUserRepositoryComponent
 
   def main(args: Array[String]) {
-    implicit val userRepository = new InMemoryUserRepository
-    if(userRepository.get("testuser").isEmpty) {
-      userRepository.put(User("testuser", "testuser@gmail.com", isAdmin = true))
-    } else {
-      println("user with userId testuser already exists")
-    }
-    val authStatus = UserAuthorization.authorize("testuser")
-    println(authStatus)
-  }
-
-}
-
-object MongoStorageService {
-
-  def main(args: Array[String]) {
-    implicit val userRepository = new MongoDbUserRepository
-    if(userRepository.get("testuser").isEmpty) {
-      userRepository.put(User("testuser", "testuser@gmail.com", isAdmin = true))
-    } else {
-      println("user with userId testuser already exists")
-    }
-    val authStatus = UserAuthorization.authorize("testuser")
-    println(authStatus)
+    userService.create("testuser", "abc123", "testuser@gmail.com")
+    println(userService.authenticate("testuser", "abc123"))
+    println(userService.authenticate("testuser", "ab123"))
   }
 
 }

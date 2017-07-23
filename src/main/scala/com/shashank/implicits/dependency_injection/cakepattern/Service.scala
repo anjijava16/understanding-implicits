@@ -4,27 +4,30 @@ package com.shashank.implicits.dependency_injection.cakepattern
   * Created by shashank on 20/07/2017.
   */
 
-trait UserAuthorizationComponent {
-  def userAuthorization: UserAuthorization
+trait UserService {
+  def authenticate(username: String, password: String): Boolean
 
-  trait UserAuthorization {
-    def authorize(username: String):Boolean
-  }
+  def create(username: String, password: String, email:String): Option[String]
+
+  def delete(username: String): Boolean
+
 }
 
-// Component implementation
-trait UserAuthorizationComponentImpl extends UserAuthorizationComponent {
+trait UserServiceComponent { this: UserRepositoryComponent =>
+  val userService:UserService
 
-  this: UserRepositoryComponent =>
+  class UserServiceImpl extends UserService {
+    def authenticate(username: String, password: String): Boolean = {
+      userRepository.get(username) match {
+        case Some(user) if user.password == password => true
+        case _ => false
+      }
+    }
 
-  def userAuthorization = new UserAuthorizationImpl
+    def delete(username: String): Boolean =  userRepository.delete(username)
 
-  class UserAuthorizationImpl extends UserAuthorization {
-    def authorize(username: String):Boolean = {
-      println("Authorizing " + username)
-      val status = userRepository.get(username).get.isAdmin//.getOrElse(false)
-      println(s"Authorization status for $username is $status" )
-      status
+    def create(username: String, password: String, email:String): Option[String] = {
+      userRepository.create(User(username, password, email)).map(_.username)
     }
   }
 }

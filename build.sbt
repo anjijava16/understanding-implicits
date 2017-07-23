@@ -17,7 +17,8 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "org.mongodb" %% "casbah" % "2.8.2",
   "com.typesafe.akka" %% "akka-http" %  "10.0.4",
-  "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.4"
+  "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.4",
+  "org.scalatest" %% "scalatest" % "2.2.5"
   /*"org.apache.spark" %% "spark-core" % sparkVersion,
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   "org.apache.spark" %% "spark-mllib" % sparkVersion,
