@@ -5,6 +5,7 @@ import ConversionImplicits.userToJsObject
 /**
   * Created by shashank on 23/07/2017.
   */
+
 object DataTypeImplicitConversion {
 
   def main(args: Array[String]) {

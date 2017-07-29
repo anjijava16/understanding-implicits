@@ -3,8 +3,6 @@ package com.shashank.implicits.datatype_conversions
 import spray.json._
 
 
-
-
 object DataTypeConversion {
 
   def main(args: Array[String]) {
